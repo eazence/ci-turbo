@@ -1,0 +1,95 @@
+{
+  "atomCode" : "Turbo",
+  "execution" : {
+    "language" : "java",
+    "minimumVersion" : "1.8",
+    "demands" : [ ],
+    "packagePath" : "Turbo.jar",
+    "target" : "$bk_java_path -Dfile.encoding=utf8 -jar Turbo.jar"
+  },
+  "input" : {
+    "turboPlanId" : {
+      "label" : "Turbo plan",
+      "placeholder" : "Please select a turbo plan……",
+      "default" : "",
+      "type" : "devops-select",
+      "desc" : "Please select the acceleration plan created under the Turbo service",
+      "optionsConf": {
+        "searchable": true,
+        "multiple": false,
+        "url": "/turbo/api/user/turboPlan/list/projectId/{projectId}",
+        "paramId": "planId",
+        "paramName": "planName",
+        "hasAddItem": false
+      },
+      "required" : true
+    },
+    "turboTips" : {
+      "type" : "tips",
+      "url": "/turbo/api/user/turboEngineConfig/engineInfo/planId/${turboPlanId}",
+      "dataPath": "data.pluginTips"
+    },
+    "scriptFrom" : {
+      "label": "Compile script source",
+      "default": "FILE",
+      "type": "enum-input",
+      "required": true,
+      "isSensitive": false,
+      "list": [
+        {
+          "label": "File",
+          "value": "FILE"
+        },
+        {
+          "label": "Online",
+          "value": "ONLINE"
+        }
+      ]
+    },
+    "turboScriptFile" : {
+      "label" : "Compile script file",
+      "default" : "",
+      "placeholder" : "Please enter the relative path of the compiled script under the workspace, such as: build/package.sh",
+      "type" : "vuex-input",
+      "desc" : "The relative path of the compiled script in the workspace, such as: build/package.sh",
+      "required" : true,
+      "rely": {
+        "operation": "AND",
+        "expression": [
+          {
+            "key": "scriptFrom",
+            "value": "FILE"
+          }
+        ]
+      }
+    },
+    "turboScript" : {
+      "label" : "Compile script",
+      "default" : "",
+      "placeholder" : "Please enter the compilation script……",
+      "type" : "atom-ace-editor",
+      "desc" : "Compilation script for Turbo",
+      "required" : true,
+      "rely": {
+        "operation": "AND",
+        "expression": [
+          {
+            "key": "scriptFrom",
+            "value": "ONLINE"
+          }
+        ]
+      }
+    },
+    "continueNoneZero" : {
+      "text" : "Continue execution when the return code of each command is not zero",
+      "label" : "",
+      "default" : false,
+      "type" : "atom-checkbox",
+      "desc" : "Continue execution when the return code of each command is not zero",
+      "required" : false,
+      "disabled" : false,
+      "hidden" : false,
+      "isSensitive" : false
+    }
+  }
+}
