@@ -107,3 +107,17 @@ task buildAndCopyZip(type: Copy, dependsOn: [buildZip]) {
         fileName = "Turbo.zip"
     }
 }
+
+task renameEnTaskJson(type: Copy) {
+    from "task_en.json"
+    into "build/libs"
+    rename { String fileName ->
+        fileName = "task.json"
+    }
+}
+
+task buildZipWithEn(type: Zip, dependsOn: [renameEnTaskJson, shadowJar]) {
+    from "build/libs"
+    into "Turbo_en"
+    baseName "Turbo_en"
+}
